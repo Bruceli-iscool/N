@@ -12,8 +12,11 @@ public class Calculator {
             if (line.equals("add")) {
                 int x = i.nextInt();
                 int y = i.nextInt();
+                System.out.print("sum: ");
                 System.out.println(x+y);
-            }
+            } else if (line.equals("quit")) {
+                System.exit(0);
+            } 
         }
     }
 }
