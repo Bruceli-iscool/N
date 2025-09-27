@@ -24,32 +24,46 @@ public class n {
                         String operator = current;
                         current = get(tokens);
                         tokens = remove(tokens);
+                        int x = 0;
+                        int y = 0;
                         if (current.matches("-?\\d+")) {
-                            int x = Integer.parseInt(current);
-                            current = get(tokens);
-                            tokens = remove(tokens);
-                            if (current.matches("-?\\d+")) {
-                                int y = Integer.parseInt(current);
-                                current = get(tokens);
-                                tokens = remove(tokens);
-                                if (inDef) {
-                                    currentVarValue += executeOperation(x, y, operator);
-                                } else {
-                                    System.out.println(executeOperation(x, y, operator));
-                                }
-                            } else {
-                                expectedIntError(current);
-                            }
+                            x = Integer.parseInt(current);
+                        } else if (vars.containsKey(current)) {
+                            x = vars.get(current);
                         } else {
                             expectedIntError(current);
+                            continue;
+                        }
+                        current = get(tokens);
+                        tokens = remove(tokens);
+                        if (current.matches("-?\\d+")) {
+                            y = Integer.parseInt(current);
+                        } else if (vars.containsKey(current)) {
+                            y = vars.get(current);
+                        } else {
+                            expectedIntError(current);
+                            continue;
+                        }
+                        current = get(tokens);
+                        tokens = remove(tokens);
+                        if (inDef) {
+                            currentVarValue += executeOperation(x, y, operator);
+                        } else {
+                            System.out.println(executeOperation(x, y, operator));
                         }
                     } else if (current.matches("define")) {
                         current = get(tokens);
                         tokens = remove(tokens);
                         if (current.matches("^[a-zA-Z_$][a-zA-Z0-9_$]*$")) {
                             varName = current;
-                            inDef = true;
-                            currentVarValue = 0; 
+                            if (vars.containsKey(varName)) {
+                                System.err.println("N: Error! Variable name '" +varName +"' already exists!");
+                            } else {
+                                inDef = true;
+                                currentVarValue = 0; 
+                            }
+                        } else {
+                            notValidName(current);
                         }
                     } else if (current.matches("quit")) {
                         i.close();
@@ -59,6 +73,8 @@ public class n {
                     } else if (current.matches("end")&&inDef) {
                         inDef = false;
                         vars.put(varName, currentVarValue);
+                    } else if (vars.containsKey(current)&&inDef) {
+                        currentVarValue += vars.get(current);
                     }
                 }
             }
@@ -141,6 +157,9 @@ public class n {
     }
     // error functions
     protected static void expectedIntError(String current) {
-        System.err.println("MECL: Error! Expected an Integer but recieved '" + current+"'.");
+        System.err.println("N: Error! Expected an Integer but recieved '" + current+"'.");
+    }
+    protected static void notValidName(String current) {
+        System.err.println("N: Error! '"+current+"' is not a valid identifier!");
     }
 }
