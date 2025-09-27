@@ -1,2 +1,2 @@
-# Documentation for MECL
-The documentation for the Mathamatical Equation Computation Language is contained within this folder and its subfolders.
+# Documentation for N
+The documentation for the N programming language is contained within this folder and its subfolders.

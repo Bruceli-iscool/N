@@ -1,2 +1,2 @@
-# MECL
-Mathematical Equation Computing Language
+# N
+The N (Notation) programming Langauge.

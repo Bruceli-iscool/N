@@ -1,2 +1,2 @@
-# Basic operators in MECL
+# Basic operators in N
 
