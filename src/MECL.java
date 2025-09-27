@@ -6,15 +6,40 @@ public class MECL {
         repl();
     }
     public static void repl() {
-        Scanner i = new Scanner(System.in);
-        while (true) {
-            String line = i.nextLine();
-            ArrayList<String> tokens = lex(line);
-            while (!tokens.isEmpty()) {
-                String current = tokens.get(0);
-                tokens = remove(tokens);
-                if ()
+        try {
+            Scanner i = new Scanner(System.in);
+            while (true) {
+                String line = i.nextLine();
+                ArrayList<String> tokens = lex(line);
+                while (!tokens.isEmpty()) {
+                    String current = get(tokens);
+                    tokens = remove(tokens);
+                    if (current.matches("\\+")||current.matches("\\-")||current.matches("\\*")||current.matches("\\/")||current.matches("\\%")) {
+                        String operator = current;
+                        current = get(tokens);
+                        tokens = remove(tokens);
+                        if (current.matches("-?\\d+")) {
+                            int x = Integer.parseInt(current);
+                            current = get(tokens);
+                            tokens = remove(tokens);
+                            if (current.matches("-?\\d+")) {
+                                int y = Integer.parseInt(current);
+                                current = get(tokens);
+                                tokens = remove(tokens);
+                                System.out.println(executeOperation(x, y, operator));
+                            } else {
+                                expectedIntError(current);
+                            }
+                        } else {
+                            expectedIntError(current);
+                        }
+                    } else if (current.matches("quit")) {
+                        System.exit(0);
+                    }
+                }
             }
+        } catch (NoSuchElementException e) {
+            // leave blank
         }
     }
     public static ArrayList<String> lex(String line) {
@@ -25,7 +50,7 @@ public class MECL {
         for (int i = 0; i < p.length(); i++) {
             char c = p.charAt(i);
             switch (c) {
-                case '(': case ')': case ';': case '=': case '+': case '-': case '*': case '/':case '{': case '}':case ':':
+                case '(': case ')': case ';': case '=': case '+': case '-': case '*': case '/':case '{': case '}':case ':':case '%':
                     if (!z.isEmpty()) {
                         result.add(z);
                         z = "";
@@ -60,7 +85,7 @@ public class MECL {
         }
         return result;
     }
-    protected static String get(tokens) {
+    protected static String get(ArrayList<String>tokens) {
         if (tokens.isEmpty()) {
             return "";
         } else {
@@ -69,7 +94,25 @@ public class MECL {
     }
     protected static ArrayList<String> remove(ArrayList<String> tokens) {
         if (tokens.isEmpty()) {
-            return
+            return tokens;
+        } else {
+            tokens.remove(0);
+            return tokens;
         }
+    }
+    public static int executeOperation(int x, int y, String operator) {
+        switch (operator) {
+            case "+": return x + y;
+            case "-": return x - y;
+            case "*": return x * y;
+            case "/": return x / y; 
+            case "%": return x % y;
+            default: break;
+        }
+        return 0;
+    }
+    // error functions
+    protected static void expectedIntError(String current) {
+        System.err.println("MECL: Error! Expected an Integer but recieved '" + current+"'.");
     }
 }
