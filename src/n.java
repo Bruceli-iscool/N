@@ -3,7 +3,7 @@ import java.util.*;
 public class n {
     protected static HashMap<String, Integer> vars = new HashMap<>();
     public static void main(String args[]) {
-        System.out.println("Calculator v1.0 by Bruce Li\n(c) 2025 All Rights Reserved.\nNO WARRANTY IS PROVIDED OF ANYKIND!");
+        System.out.println("N repl v1.0 by Bruce Li\nNO WARRANTY IS PROVIDED OF ANYKIND!");
         repl();
     }
     public static void repl() {
@@ -75,6 +75,16 @@ public class n {
                         vars.put(varName, currentVarValue);
                     } else if (vars.containsKey(current)&&inDef) {
                         currentVarValue += vars.get(current);
+                    } else if (current.matches("set")) {
+                        current = get(tokens);
+                        tokens = remove(tokens);
+                        if (vars.containsKey(current)) {
+                            inDef = true;
+                            currentVarValue =0;
+                            varName = current;
+                        } else {
+                            System.err.println("N: Error! '"+current+"' does not exist!");
+                        }
                     }
                 }
             }
