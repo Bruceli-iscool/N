@@ -12,6 +12,7 @@ public class n {
             boolean inDef = false;
             String varName ="";
             int currentVarValue = 0;
+            int stack = 0;
             while (true) {
                 String line = i.nextLine();
                 if (line == null) continue;
@@ -61,6 +62,7 @@ public class n {
                             } else {
                                 inDef = true;
                                 currentVarValue = 0; 
+                                stack += 1;
                             }
                         } else {
                             notValidName(current);
@@ -75,6 +77,7 @@ public class n {
                         vars.put(varName, currentVarValue);
                     } else if (vars.containsKey(current)&&inDef) {
                         currentVarValue += vars.get(current);
+                        stack -= 1;
                     } else if (current.matches("set")) {
                         current = get(tokens);
                         tokens = remove(tokens);
@@ -82,6 +85,7 @@ public class n {
                             inDef = true;
                             currentVarValue =0;
                             varName = current;
+                            stack += 1;
                         } else {
                             System.err.println("N: Error! '"+current+"' does not exist!");
                         }
