@@ -93,7 +93,7 @@ public class n {
                 }
             }
         } catch (NoSuchElementException e) {
-            // leave blank
+            // leave blank.
         }
     }
     public static ArrayList<String> lex(String line) {
