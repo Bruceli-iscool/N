@@ -64,6 +64,7 @@ public class n {
                                 currentVarValue = 0; 
                                 stack += 1;
                             }
+                            
                         } else {
                             notValidName(current);
                         }
